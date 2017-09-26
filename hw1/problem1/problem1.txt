@@ -1,10 +1,8 @@
 1a)
 cat queue.txt| grep 'PD'  | tr -s ' ' | cut -d ' ' -f 5 | sort |uniq -c | tr -s ' ' | cut -d ' ' -f 2,3 | sort -g | tail -n 1
 
-999 yudhajit
+665 yudhajit
 
 1b)
-cat queue.txt | grep 'PD' |grep 'yudhajit' | tr -s ' '| cat queue.txt | grep 'yudhajit' | tr -s ' '| cut -d ' ' -f 8 | awk '{sum += $1}; END {print sum}'
-999
-
-test
+cat queue.txt | tr -s ' '| grep 'yudhajit PD' |cut -d ' ' -f 8 | awk '{sum += $1}; END {print sum}'
+665
