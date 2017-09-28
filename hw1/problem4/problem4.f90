@@ -15,13 +15,15 @@
          DOUBLE PRECISION :: ddot
          DOUBLE PRECISION myflops,ddotflops,myt,theirt
          double precision numops,time
+         real*8 time1,time2 
          call RANDOM_SEED()
-         open(unit=1,file="problem4.txt")
+         open(unit=1,file="problem4_2.txt")
+         open(unit=2,file='timesgfort.txt')
          write(1,*) "Vector Size (Mbytes), ",'My L1 BLAS, ' &
      &                ,'NETLIB L1 BLAS'
 
          n = 1
-         do while (n .lt.  8d10)
+         do while (n .lt.  1d9)
            ALLOCATE(v1 (n))
            ALLOCATE(v2 (n))
            do i = 1, n ,1
@@ -45,17 +47,22 @@
            optdot = ddot(n,v1,1,v2,1)
            call system_clock(stop2,countrate)
            numops  = 2*n  
-           myt = (stop1-start1)*1d0/countrate
+           myt = (stop1-start1)*countrate
            theirt = (stop2-start2)*1d0/countrate
            myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
            time = (stop3-start3)*1d0/countrate
-
+           time1 = (stop1-start1)
+           time1 = time1/countrate
+           time2 = (stop2-stop1)
+           time2 = time2/countrate
            write(1,*) 8* n,',',myflops,',',ddotflops
+           write(2,*) time1,time2
            DEALLOCATE(v1)
            DEALLOCATE(v2)
            n = n*2
          end do
          close(1)
+         close(2)
 
        end program

@@ -1,7 +1,7 @@
 objects = problem4.o
 Comp = gfortran
 FFLAG = -O2
-INCLUDES = -I/usr/include
+INCLUDES = -I/usr/include 
 LIBS = -lgfortran -lblas
 LFLAG = -L/usr/lib64
 problem4: $(objects)
