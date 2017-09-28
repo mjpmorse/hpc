@@ -1,54 +1,60 @@
        program problem4
          implicit none
-         real*4, DIMENSION(:),ALLOCATABLE :: v1
-         real*4, DIMENSION(:),ALLOCATABLE :: v2
-         real*4, DIMENSION(:),ALLOCATABLE :: v3
-         real*4, DIMENSION(:),ALLOCATABLE :: v4
-         integer n,m
+         DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: v1
+         DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: v2
+         DOUBLE PRECISION optdot
+         DOUBLE PRECISION mydot
+         integer*8 n
          integer i,j
-         real*4 random1
-         real*4 random2
+         DOUBLE PRECISION random1
+         DOUBLE PRECISION random2
          real seed
-         real start1,start2
-         real stop1,stop2
-
-
+         integer*8 start1,start2
+         integer*8 stop1,stop2
+         integer*8 start3,stop3,countrate
+         DOUBLE PRECISION :: ddot
+         DOUBLE PRECISION myflops,ddotflops,myt,theirt
+         double precision numops,time
          call RANDOM_SEED()
          open(unit=1,file="problem4.txt")
-         write(1,*) "Vector Size, ",'My L1 BLAS, ',
-      &                           'NETLIB L1 BLAS'
+         write(1,*) "Vector Size (Mbytes), ",'My L1 BLAS, ' &
+     &                ,'NETLIB L1 BLAS'
 
-         m = 1
-         do n = 1,16000,m
+         n = 1
+         do while (n .lt.  8d10)
            ALLOCATE(v1 (n))
            ALLOCATE(v2 (n))
-           ALLOCATE(v3 (n))
-           ALLOCATE(v4(n))
            do i = 1, n ,1
              call RANDOM_NUMBER(random1)
              call RANDOM_NUMBER(random2)
-             m1(i) = random1
-             m1(i) = random2
-             m = 2*n
+             v1(i) = random1
+             v2(i) = random2
            end do
 
-   !my ddot
-           call cpu_time(start1)
+!my ddot  
+           mydot= 0
+           optdot = 0
+           call SYSTEM_CLOCK(start1,countrate)
            do i = 1, n , 1
-             v3(i) = v1(i)+v2(i)
+             mydot =mydot +  v1(i)*v2(i)
            end do
-           call cpu_time(stop1)
-   !NetLIB L1 BLAS
+           call SYSTEM_CLOCK(stop1,countrate)
+!NetLIB L1 BLAS
 
-           call cpu_time(start2)
-           call dot(v1,v2,v4)
-           call cpu_time(stop2)
+           call SYSTEM_CLOCK(start2,countrate)
+           optdot = ddot(n,v1,1,v2,1)
+           call system_clock(stop2,countrate)
+           numops  = 2*n  
+           myt = (stop1-start1)*1d0/countrate
+           theirt = (stop2-start2)*1d0/countrate
+           myflops = numops/myt/(1d6)
+           ddotflops = numops/theirt/(1d6)
+           time = (stop3-start3)*1d0/countrate
 
-           write(1,*) 4*n,',',stop1-start1,',',stop2-start2
+           write(1,*) 8* n,',',myflops,',',ddotflops
            DEALLOCATE(v1)
            DEALLOCATE(v2)
-           DEALLOCATE(v3)
-           DEALLOCATE(v4)
+           n = n*2
          end do
          close(1)
 

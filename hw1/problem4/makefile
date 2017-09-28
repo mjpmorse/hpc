@@ -2,8 +2,8 @@ objects = problem4.o
 Comp = gfortran
 FFLAG = -O2
 INCLUDES = -I/usr/include
-LIBS = -lgfortran -llibblas
-LFLAG = -L/lib64
+LIBS = -lgfortran -lblas
+LFLAG = -L/usr/lib64
 problem4: $(objects)
 	$(Comp) $(INCLUDES) -o problem4 $(objects) $(LFLAG)  $(LIBS)
 
@@ -11,8 +11,8 @@ problem4: $(objects)
 	$(Comp) $(FFLAG) -o $@ $^ $(LFAG) $(LIBS)
 
 
-%.o: %.f
-	$(Comp) -I/usr/include -I/usr/lib64 $(LFLAG) -c $<
+%.o: %.f90
+	$(Comp) -I/usr/include  $(LFLAG) -c $<
 
 clean:
 	rm *.o
