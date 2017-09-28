@@ -5,10 +5,7 @@ INCLUDES = -I/usr/include
 LIBS = -lgfortran
 FFLAG = -L/usr/lib
 problem3: $(objects)
-	gfortran $(INCLUDES) -o problem3 $(objects) $(LFLAGS)  $(LIBS)
-
-problem3intel: $(objects)
-	ifort $(INCLUDES) -o problem3intel $(objects) $(LFLAGS) $(LIBS)
+	$(Comp) $(INCLUDES) -o problem3 $(objects) $(LFLAGS)  $(LIBS)
 
 %: %.o
 	$(Comp) $(FFLAG) -o $@ $^ $(LIBS)

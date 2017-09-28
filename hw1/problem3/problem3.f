@@ -10,13 +10,9 @@
         real seed
         real start1,start2
         real stop1,stop2
-        real clock_rate
-        real clock_max
 
-        clock_rate = 1
-        clock_max = 1d4
         call RANDOM_SEED()
-        open(unit=1,file="data.txt")
+        open(unit=1,file="datai.txt")
         write(1,*) "Matrix Size, ",'First Index Sum 1rst, ',
      &                           'Second Index Sum 1rst'
 
