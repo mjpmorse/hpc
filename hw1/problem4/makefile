@@ -1,8 +1,8 @@
 objects = problem4.o
-Comp = gfortran
+Comp = mpifort
 FFLAG = -O2
 INCLUDES = -I/usr/include 
-LIBS = -lgfortran -lblas
+LIBS = -lgfortran -lblas -lmpi
 LFLAG = -L/usr/lib64
 problem4: $(objects)
 	$(Comp) $(INCLUDES) -o problem4 $(objects) $(LFLAG)  $(LIBS)

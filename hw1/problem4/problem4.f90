@@ -1,5 +1,6 @@
        program problem4
          implicit none
+         include 'mpif.h'
          DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: v1
          DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: v2
          DOUBLE PRECISION optdot
@@ -10,20 +11,23 @@
          DOUBLE PRECISION random2
          real seed
          integer*8 start1,start2
-         integer*8 stop1,stop2
-         integer*8 start3,stop3,countrate
+         integer*8 stop1,stop2,countrate
+         DOUBLE PRECISION start3,stop3,start4,stop4
          DOUBLE PRECISION :: ddot
          DOUBLE PRECISION myflops,ddotflops,myt,theirt
          double precision numops,time
          real*8 time1,time2 
          call RANDOM_SEED()
-         open(unit=1,file="problem4_2.txt")
-         open(unit=2,file='timesgfort.txt')
+
+
+         call MPI_INIT(j)
+         open(unit=1,file="problem4mkl.txt")
+         open(unit=2,file='timesmkl.txt')
          write(1,*) "Vector Size (Mbytes), ",'My L1 BLAS, ' &
      &                ,'NETLIB L1 BLAS'
 
          n = 1
-         do while (n .lt.  1d9)
+         do while (n .lt.  1d8)
            ALLOCATE(v1 (n))
            ALLOCATE(v2 (n))
            do i = 1, n ,1
@@ -36,33 +40,39 @@
 !my ddot  
            mydot= 0
            optdot = 0
-           call SYSTEM_CLOCK(start1,countrate)
+           start3 =  MPI_Wtime()
+!           call SYSTEM_CLOCK(start1,countrate)
            do i = 1, n , 1
              mydot =mydot +  v1(i)*v2(i)
            end do
-           call SYSTEM_CLOCK(stop1,countrate)
-!NetLIB L1 BLAS
+!           call SYSTEM_CLOCK(stop1,countrate)
+           stop3 =  MPI_Wtime()
 
-           call SYSTEM_CLOCK(start2,countrate)
+
+!NetLIB L1 BLAS
+           start4 = MPI_Wtime()
+!           call SYSTEM_CLOCK(start2,countrate)
            optdot = ddot(n,v1,1,v2,1)
-           call system_clock(stop2,countrate)
+!           call system_clock(stop2,countrate)
+           stop4 = MPI_WTime()
+
            numops  = 2*n  
-           myt = (stop1-start1)*countrate
-           theirt = (stop2-start2)*1d0/countrate
+
+           myt = (stop3-start3)
+           theirt = (stop4-start4)
            myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
-           time = (stop3-start3)*1d0/countrate
            time1 = (stop1-start1)
-           time1 = time1/countrate
+           time1 = time1
            time2 = (stop2-stop1)
-           time2 = time2/countrate
+           time2 = time2
            write(1,*) 8* n,',',myflops,',',ddotflops
-           write(2,*) time1,time2
+           write(2,*) myt,theirt
            DEALLOCATE(v1)
            DEALLOCATE(v2)
            n = n*2
          end do
          close(1)
          close(2)
-
+         call MPI_FINALIZE()
        end program
