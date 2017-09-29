@@ -62,10 +62,6 @@
            theirt = (stop4-start4)
            myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
-           time1 = (stop1-start1)
-           time1 = time1
-           time2 = (stop2-stop1)
-           time2 = time2
            write(1,*) 8* n,',',myflops,',',ddotflops
            write(2,*) myt,theirt
            DEALLOCATE(v1)
