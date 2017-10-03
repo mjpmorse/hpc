@@ -1,14 +1,13 @@
-       program problem4
+       program problem5
          implicit none
-         include 'mpif.h'
-         DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: m1
-         DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: m2
-         DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: m3
-         DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: m4
+         DOUBLE PRECISION, DIMENSION(:,:),ALLOCATABLE :: m1
+         DOUBLE PRECISION, DIMENSION(:,:),ALLOCATABLE :: m2
+         DOUBLE PRECISION, DIMENSION(:,:),ALLOCATABLE :: m3
+         DOUBLE PRECISION, DIMENSION(:,:),ALLOCATABLE :: m4
          DOUBLE PRECISION optdot
          DOUBLE PRECISION mydot
          integer*8 n
-         integer i,j
+         integer i,j,k
          DOUBLE PRECISION random1, random3
          DOUBLE PRECISION random2, random4
          real seed
@@ -22,61 +21,59 @@
          call RANDOM_SEED()
 
 
-         call MPI_INIT(j)
-         open(unit=1,file="problem4mkl.txt")
-         open(unit=2,file='timesmkl.txt')
-         write(1,*) "Vector Size (Mbytes), ",'My L1 BLAS, ' &
-     &                ,'NETLIB L1 BLAS'
+         open(unit=1,file="problem5.txt")
+         open(unit=2,file='times.txt')
+         write(1,*) "Vector Size (Mbytes), ",'My L3 BLAS, ' &
+     &                ,'NETLIB L3 BLAS'
 
          n = 1
-         do while (n .lt.  1d8)
-           ALLOCATE(v1 (n,n))
-           ALLOCATE(v2 (n,n))
-           ALLOCATE(v3 (n,n))
-           ALLOCATE(v4 (n,n))
+         do while (n .lt.  1d3)
+           ALLOCATE(m1 (n,n))
+           ALLOCATE(m2 (n,n))
+           ALLOCATE(m3 (n,n))
+           ALLOCATE(m4 (n,n))
            do j = 1, n , 1
            do i = 1, n , 1
              call RANDOM_NUMBER(random1)
              call RANDOM_NUMBER(random2)
-             v1(i,j) = random1
-             v2(i,j) = random2
+             m1(i,j) = random1
+             m2(i,j) = random2
            end do
            end do
 
 !my ddot
            mydot= 0
            optdot = 0
-           start3 =  MPI_Wtime()
-!           call SYSTEM_CLOCK(start1,countrate)
+           call SYSTEM_CLOCK(start1,countrate)
            do i = 1, n , 1
              do j = 1, n , 1
-               v3(i,j) = v3(i,j) + v1(i,j)*v2(j,i)
+               do k = 1, n ,1
+                  m3(i,j) = m3(i,j) + m1(i,k)*m2(k,i)
+               end do
              end do
            end do
-!           call SYSTEM_CLOCK(stop1,countrate)
-           stop3 =  MPI_Wtime()
+           call SYSTEM_CLOCK(stop1,countrate)
 
 
 !NetLIB L1 BLAS
-           start4 = MPI_Wtime()
-!           call SYSTEM_CLOCK(start2,countrate)
-           v4 = dgemm('n','n',n,n,n,1d0,n,n,n,0)
-!           call system_clock(stop2,countrate)
-           stop4 = MPI_WTime()
+           call SYSTEM_CLOCK(start2,countrate)
+           call dgemm('n','n',n,n,n,1d0,m1,n,m2,n,0d0,m4,n)
+           call system_clock(stop2,countrate)
 
-           numops  = 2*n
+           numops  = 2*n*n*n
 
-           myt = (stop3-start3)
-           theirt = (stop4-start4)
+           myt = (stop1-start1)*1d0/countrate
+           theirt = (stop2-start2)*1d0/countrate
            myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
-           write(1,*) 8* n,',',myflops,',',ddotflops
+           write(1,*) 8* n*n,',',myflops,',',ddotflops
            write(2,*) myt,theirt
-           DEALLOCATE(v1)
-           DEALLOCATE(v2)
-           n = n*2
+           DEALLOCATE(m1)
+           DEALLOCATE(m2)
+           DEALLOCATE(m3)
+           DEALLOCATE(m4)
+           n = n*4
          end do
          close(1)
          close(2)
-         call MPI_FINALIZE()
        end program

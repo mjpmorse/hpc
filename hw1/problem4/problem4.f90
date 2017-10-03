@@ -1,6 +1,5 @@
        program problem4
          implicit none
-         include 'mpif.h'
          DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: v1
          DOUBLE PRECISION, DIMENSION(:),ALLOCATABLE :: v2
          DOUBLE PRECISION optdot
@@ -20,14 +19,13 @@
          call RANDOM_SEED()
 
 
-         call MPI_INIT(j)
          open(unit=1,file="problem4mkl.txt")
          open(unit=2,file='timesmkl.txt')
          write(1,*) "Vector Size (Mbytes), ",'My L1 BLAS, ' &
      &                ,'NETLIB L1 BLAS'
 
          n = 1
-         do while (n .lt.  1d8)
+         do while (n .lt.  1d7)
            ALLOCATE(v1 (n))
            ALLOCATE(v2 (n))
            do i = 1, n ,1
@@ -40,26 +38,22 @@
 !my ddot  
            mydot= 0
            optdot = 0
-           start3 =  MPI_Wtime()
-!           call SYSTEM_CLOCK(start1,countrate)
+           call SYSTEM_CLOCK(start1,countrate)
            do i = 1, n , 1
              mydot =mydot +  v1(i)*v2(i)
            end do
-!           call SYSTEM_CLOCK(stop1,countrate)
-           stop3 =  MPI_Wtime()
+           call SYSTEM_CLOCK(stop1,countrate)
 
 
 !NetLIB L1 BLAS
-           start4 = MPI_Wtime()
-!           call SYSTEM_CLOCK(start2,countrate)
+           call SYSTEM_CLOCK(start2,countrate)
            optdot = ddot(n,v1,1,v2,1)
-!           call system_clock(stop2,countrate)
-           stop4 = MPI_WTime()
+           call system_clock(stop2,countrate)
 
-           numops  = 2*n  
+           numops  = 2.*n  
 
-           myt = (stop3-start3)
-           theirt = (stop4-start4)
+           myt = (stop1-start1)*1d0
+           theirt = (stop2-start1)*1d0
            myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
            write(1,*) 8* n,',',myflops,',',ddotflops
@@ -70,5 +64,4 @@
          end do
          close(1)
          close(2)
-         call MPI_FINALIZE()
        end program

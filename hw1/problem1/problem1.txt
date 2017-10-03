@@ -6,3 +6,16 @@ cat queue.txt| grep 'PD'  | tr -s ' ' | cut -d ' ' -f 5 | sort |uniq -c | tr -s 
 1b)
 cat queue.txt | tr -s ' '| grep 'yudhajit PD' |cut -d ' ' -f 8 | awk '{sum += $1}; END {print sum}'
 665
+
+3)
+cat queue.txt| grep 'R'  | tr -s ' ' | cut -d ' ' -f 5 | sort |uniq -c | tr -s ' ' | cut -d ' ' -f 3 |awk '{ print length, $0 }' |sort -n |
+
+4)
+
+cat queue.txt| tr -s ' ' | cut -d ' ' -f 5,8 | sort -t ' ' -n -k2 | tail -n 1
+mohsenda 40
+
+5)
+cat queue.txt| grep '(Priority)'  | tr -s ' ' | cut -d ' ' -f 5 | sort | uniq | wc -l
+
+7
