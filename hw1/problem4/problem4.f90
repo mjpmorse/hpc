@@ -18,14 +18,13 @@
          real*8 time1,time2 
          call RANDOM_SEED()
 
-
-         open(unit=1,file="problem4mkl.txt")
-         open(unit=2,file='timesmkl.txt')
+         open(unit=1,file="problem4.txt")
+         open(unit=2,file='times.txt')
          write(1,*) "Vector Size (Mbytes), ",'My L1 BLAS, ' &
      &                ,'NETLIB L1 BLAS'
 
          n = 1
-         do while (n .lt.  1d7)
+         do while (n .lt.  1d8)
            ALLOCATE(v1 (n))
            ALLOCATE(v2 (n))
            do i = 1, n ,1
@@ -52,8 +51,8 @@
 
            numops  = 2.*n  
 
-           myt = (stop1-start1)*1d0
-           theirt = (stop2-start1)*1d0
+           myt = (stop1-start1)*1d0/countrate
+           theirt = (stop2-start1)*1d0/countrate
            myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
            write(1,*) 8* n,',',myflops,',',ddotflops
