@@ -1,9 +1,9 @@
 objects = problem4.o
 Comp = gfortran
-FFLAG = -O2 -fdefault-integer-8 -m64
-INCLUDES = -I/usr/include 
-LIBS = -lgfortran -lblas 
-LFLAG = -L/usr/lib64
+FFLAG = -o -O2
+INCLUDES = -I/usr/include -m64 -I${MKLROOT}/include -I/util/academic 
+LIBS = -lgfortran -lblas  -lmkl_gf_lp64 -lmkl_core -lmkl_sequential -lpthread -lm 
+LFLAG = -L/usr/lib64 -Wl,--no-as-needed -L${MKLROOT}/lib/intel64 -L/util/academic
 problem4mkl: $(objects)
 	$(Comp) $(INCLUDES) -o problem4mkl $(objects) $(LFLAG)  $(LIBS)
 
@@ -12,7 +12,7 @@ problem4mkl: $(objects)
 
 
 %.o: %.f90
-	$(Comp) -I/usr/include  $(LFLAG) -c $<
+	$(Comp) $(INCLUDES)  $(LFLAG) -c $<
 
 clean:
-	rm *.o problem4mkl
+	rm *.o

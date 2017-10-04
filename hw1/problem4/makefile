@@ -1,6 +1,6 @@
 objects = problem4.o
 Comp = gfortran
-FFLAG = -O2 -fdefault-integer-8 -m64
+FFLAG = -O2 
 INCLUDES = -I/usr/include 
 LIBS = -lgfortran -lblas 
 LFLAG = -L/usr/lib64
@@ -12,7 +12,7 @@ problem4: $(objects)
 
 
 %.o: %.f90
-	$(Comp) -I/usr/include  $(LFLAG) -c $<
+	$(Comp) $(INCLUDES)   $(LFLAG) -c $<
 
 clean:
 	rm *.o
