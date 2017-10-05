@@ -69,9 +69,9 @@
            myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
            write(1,*) 8* n*n,',',myflops,',',ddotflops
-           write(*,*) 8* n*n,',',myflops,',',ddotflops
+!           write(*,*) 8* n*n,',',myflops,',',ddotflops
            write(2,*) myt,theirt
-           
+
            DEALLOCATE(m1)
            DEALLOCATE(m2)
            DEALLOCATE(m3)

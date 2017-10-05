@@ -28,8 +28,8 @@
               m1(j,i) = random2
             end do
           end do
-
-!Sum over first index first
+!(row x column)
+!Sum over first index first (rows)
           call cpu_time(start1)
           do i = 1, n , 1
             do j = 1,n,1
@@ -37,7 +37,7 @@
             end do
           end do
           call cpu_time(stop1)
-!Sum over second index first
+!Sum over second index first (columns)
 
           call cpu_time(start2)
           do i = 1, n , 1
