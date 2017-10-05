@@ -21,13 +21,13 @@
          call RANDOM_SEED()
 
 
-         open(unit=1,file="problem5.txt")
-         open(unit=2,file='times.txt')
+         open(unit=1,file="problem5mkl.txt")
+         open(unit=2,file='timesmkl.txt')
          write(1,*) "Vector Size (Mbytes), ",'My L3 BLAS, ' &
      &                ,'NETLIB L3 BLAS'
 
          n = 1
-         do while (n .lt.  1d3)
+         do while (n .lt.  4097)
            ALLOCATE(m1 (n,n))
            ALLOCATE(m2 (n,n))
            ALLOCATE(m3 (n,n))
@@ -44,6 +44,7 @@
 !my ddot
            mydot= 0
            optdot = 0
+           if(n .le. 2048) THEN
            call SYSTEM_CLOCK(start1,countrate)
            do i = 1, n , 1
              do j = 1, n , 1
@@ -52,6 +53,7 @@
                end do
              end do
            end do
+           end if
            call SYSTEM_CLOCK(stop1,countrate)
 
 
@@ -67,12 +69,14 @@
            myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
            write(1,*) 8* n*n,',',myflops,',',ddotflops
+           write(*,*) 8* n*n,',',myflops,',',ddotflops
            write(2,*) myt,theirt
+           
            DEALLOCATE(m1)
            DEALLOCATE(m2)
            DEALLOCATE(m3)
            DEALLOCATE(m4)
-           n = n*4
+           n = n*2
          end do
          close(1)
          close(2)
