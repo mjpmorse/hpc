@@ -1,11 +1,11 @@
 objects = problem3.o
-Comp = ifort
-FFLAG = -O2
+Comp = gfortran
+FFLAG = -O3
 INCLUDES = -I/usr/include
 LIBS = -lgfortran
 FFLAG = -L/usr/lib
-problem3: $(objects)
-	$(Comp) $(INCLUDES) -o problem3 $(objects) $(LFLAGS)  $(LIBS)
+problem3g: $(objects)
+	$(Comp) $(INCLUDES) -o problem3g $(objects) $(LFLAGS)  $(LIBS)
 
 %: %.o
 	$(Comp) $(FFLAG) -o $@ $^ $(LIBS)

@@ -79,6 +79,18 @@ answer the following questions. Submit both the command you used and the answer.
 What user has the most pending jobs and how many are there? How many total
 nodes is this user using?
 
+\section*{Problem 2}
+
+\begin{figure}
+\label{fig:problem2}
+\includegraphics[scale=0.7]{problem2.png}
+\caption{Problem 2}
+\end{figure}
+I have included a plot of performance as a function of $f_c$ for the requested values we have
+\subsection{$f_c = 0.01$}
+predicted performance is 40.40 MFLOPS
+\subsection{$f_c = 0.99$}
+predicted performance is 1342.28 MFLOPS
 
 \section*{Problem 3}
 Write a program to perform matrix addition C = A +B for $n \times n$ matrices for various $n$,
@@ -135,6 +147,6 @@ environment modules to load MKL and for instructions on linking).
 \caption{BLAS3 with different conditions}
 \end{figure}
 
-For the ccr rush machine the theoretical peak performance is 68,000 MFlops. For a simple BLAS3 matrix matrix multiplication function we achieve a max performance of around 200MFlops or 0.3\% of peak. MKL library did not improve this. For the NETLIB Blas we achieved a max performance of 1400 MFLOPS or 2 \% of peak. Here we remark that while this process seems like it should take much longer than the problem 4 scalar product as the number of operations go like $\mathcal{O}(n^3)$ instead of $\mathcal{O}(n)$. However we notice this does not happen. For matrices and vectors of comparable size in Bytes the speed of these two processes are comparable. We notice that while MKL echoed the results of the non MKL routines. We also see a nice drop-off around a size of about $4^{12}$ Bytes of array sizes of 16MB corresponding to the point where the on cache is filled and we start having to pull from off chip cache. The cache on rush is 24MB so at this point we can no longer load both arrays to cache on chip. We also see a massive drop at $4^{15}$ or about 1GB where now the main memory is being used and the process slows way down.
+For the ccr rush machine the theoretical peak performance is 68,000 MFlops. For a simple BLAS3 matrix matrix multiplication function we achieve a max performance of around 200MFlops or 0.3\% of peak. MKL library did not improve this. For the NETLIB BlAS we achieved a max performance of 1400 MFLOPS or 2 \% of peak. Here we remark that while this process seems like it should take much longer than the problem 4 scalar product as the number of operations go like $\mathcal{O}(n^3)$ instead of $\mathcal{O}(n)$. However we notice this does not happen. For matrices and vectors of comparable size in Bytes the speed of these two processes are comparable. We notice that while MKL echoed the results of the non MKL routines. For the BLAS3 I also ran MKL with ifort to compare intels libraries compiled under ifort and gfortan. We notice in figure \ref{fig:problem5} that the simple BLAS 3 routine compiled with Intel's Fortran compiler peaks at around 1500 MFLOPS or 2.2\% of peak before falling off faster than the NETLIB BLAS routines under either compiler.  
 
 \end{document}
