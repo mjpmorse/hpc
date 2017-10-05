@@ -13,7 +13,7 @@
 
         call RANDOM_SEED()
         open(unit=1,file="datai.txt")
-        write(1,*) "Matrix Size, ",'First Index Sum 1rst, ',
+        write(1,*) "Matrix Size, ",'First Index Sum 1rst, ',&
      &                           'Second Index Sum 1rst'
 
         do n = 100,10000,100

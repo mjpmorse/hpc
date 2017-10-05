@@ -11,8 +11,8 @@ problem3g: $(objects)
 	$(Comp) $(FFLAG) -o $@ $^ $(LIBS)
 
 
-%.o: %.f
-	$(Comp) -I/usr/include $(FFLAG) -c $<
+%.o: %.f90
+	$(Comp) $(INCLUDES) $(FFLAG) -c $<
 
 clean:
 	rm *.o
