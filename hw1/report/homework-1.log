@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2017.9.5)  5 OCT 2017 14:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2017.9.5)  5 OCT 2017 14:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -289,50 +289,50 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <problem2.png, id=1, 462.528pt x 346.896pt>
 File: problem2.png Graphic file (type png)
 <use problem2.png>
-Package pdftex.def Info: problem2.png  used on input line 86. on input line 86.
+Package pdftex.def Info: problem2.png  used on input line 95. on input line 95.
 
 Package pdftex.def Info: Requested size: 323.76738pt x 242.82553pt on input lin
-e 86.
-Missing character: There is no â in font cmr12!
-Missing character: There is no € in font cmr12!
-Missing character: There is no ™ in font cmr12!
+e 95.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Missing character: There is no â in font cmr12!
+Missing character: There is no € in font cmr12!
+Missing character: There is no ™ in font cmr12!
 <problem3.png, id=14, 462.528pt x 346.896pt>
 File: problem3.png Graphic file (type png)
 <use problem3.png>
-Package pdftex.def Info: problem3.png  used on input line 105. on input line 10
-5.
+Package pdftex.def Info: problem3.png  used on input line 114. on input line 11
+4.
 Package pdftex.def Info: Requested size: 323.76738pt x 242.82553pt on input lin
-e 105.
+e 114.
+ [2 <./problem2.png>]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
- [2 <./problem2.png>]
 <problem4.png, id=20, 462.528pt x 346.896pt>
 File: problem4.png Graphic file (type png)
 <use problem4.png>
-Package pdftex.def Info: problem4.png  used on input line 126. on input line 12
-6.
+Package pdftex.def Info: problem4.png  used on input line 135. on input line 13
+5.
 Package pdftex.def Info: Requested size: 323.76738pt x 242.82553pt on input lin
-e 126.
+e 135.
+ [3 <./problem3.png>]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
- [3 <./problem3.png>]
 <problem5.png, id=26, 462.528pt x 346.896pt>
 File: problem5.png Graphic file (type png)
 <use problem5.png>
-Package pdftex.def Info: problem5.png  used on input line 146. on input line 14
-6.
+Package pdftex.def Info: problem5.png  used on input line 155. on input line 15
+5.
 Package pdftex.def Info: Requested size: 323.76738pt x 242.82553pt on input lin
-e 146.
+e 155.
  [4 <./problem4.png>] [5 <./problem5.png>] (./homework-1.aux) ) 
 Here is how much of TeX's memory you used:
  2647 strings out of 492990
  34502 string characters out of 6138689
- 96146 words of memory out of 5000000
+ 95146 words of memory out of 5000000
  6159 multiletter control sequences out of 15000+600000
  12698 words of font info for 49 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -345,7 +345,7 @@ i12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/s
 hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmsy10.pfb>
-Output written on homework-1.pdf (5 pages, 236260 bytes).
+Output written on homework-1.pdf (5 pages, 236380 bytes).
 PDF statistics:
  61 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream
