@@ -40,9 +40,10 @@
              m2(i,j) = random2
            end do
            end do
+           numops  = 2*n*n*n
 
 !my ddot
-           mydot= 0
+           myflops= 0
            optdot = 0
            if(n .le. 2048) THEN
            call SYSTEM_CLOCK(start1,countrate)
@@ -52,9 +53,11 @@
                   m3(i,j) = m3(i,j) + m1(i,k)*m2(k,i)
                end do
              end do
-           end do
-           end if
-           call SYSTEM_CLOCK(stop1,countrate)
+             end do
+            call SYSTEM_CLOCK(stop1,countrate)
+            myt = (stop1-start1)*1d0/countrate      
+            myflops = numops/myt/(1d6)
+          end if
 
 
 !NetLIB L1 BLAS
@@ -62,14 +65,12 @@
            call dgemm('n','n',n,n,n,1d0,m1,n,m2,n,0d0,m4,n)
            call system_clock(stop2,countrate)
 
-           numops  = 2*n*n*n
 
-           myt = (stop1-start1)*1d0/countrate
+
            theirt = (stop2-start2)*1d0/countrate
-           myflops = numops/myt/(1d6)
            ddotflops = numops/theirt/(1d6)
            write(1,*) 8* n*n,',',myflops,',',ddotflops
-!           write(*,*) 8* n*n,',',myflops,',',ddotflops
+           write(*,*) 8* n*n,',',myflops,',',ddotflops
            write(2,*) myt,theirt
 
            DEALLOCATE(m1)
