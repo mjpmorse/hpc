@@ -1,6 +1,6 @@
 objects = problem3.o
 Comp = gfortran
-FFLAG = -O3
+FFLAG = 
 INCLUDES = -I/usr/include
 LIBS = -lgfortran
 FFLAG = -L/usr/lib

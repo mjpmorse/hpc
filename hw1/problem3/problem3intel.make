@@ -1,6 +1,6 @@
 objects = problem3.o
 Comp = ifort
-FFLAG = -O3
+FFLAG = 
 INCLUDES = -I/usr/include
 LIBS = 
 FFLAG = -L/usr/lib

@@ -10,9 +10,11 @@
         real seed
         real start1,start2
         real stop1,stop2
+        character(len = 32) dataFile
 
         call RANDOM_SEED()
-        open(unit=1,file="datai.txt")
+        CALL GET_COMMAND_ARGUMENT(1,dataFile)
+        open(unit=1,file=dataFile)
         write(1,*) "Matrix Size, ",'First Index Sum 1rst, ',&
      &                           'Second Index Sum 1rst'
 
