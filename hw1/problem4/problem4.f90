@@ -15,11 +15,14 @@
          DOUBLE PRECISION :: ddot
          DOUBLE PRECISION myflops,ddotflops,myt,theirt
          double precision numops,time
-         real*8 time1,time2 
-         call RANDOM_SEED()
+         real*8 time1,time2
+         character(len = 32) dataFile
 
-         open(unit=1,file="problem4mkl.txt")
-         open(unit=2,file='timesmkl.txt')
+
+         call RANDOM_SEED()
+         CALL GET_COMMAND_ARGUMENT(1,dataFile)
+         open(unit=1,file=datafile)
+         open(unit=2,file='times.txt')
          write(1,*) "Vector Size (Mbytes), ",'My L1 BLAS, ' &
      &                ,'NETLIB L1 BLAS'
 
@@ -34,7 +37,7 @@
              v2(i) = random2
            end do
 
-!my ddot  
+!my ddot
            mydot= 0
            optdot = 0
            call SYSTEM_CLOCK(start1,countrate)
@@ -49,7 +52,7 @@
            optdot = ddot(n,v1,1,v2,1)
            call system_clock(stop2,countrate)
 
-           numops  = 2.*n  
+           numops  = 2.*n
 
            myt = (stop1-start1)*1d0/countrate
            theirt = (stop2-start2)*1d0/countrate

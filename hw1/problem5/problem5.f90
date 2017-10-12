@@ -18,11 +18,13 @@
          DOUBLE PRECISION myflops,ddotflops,myt,theirt
          double precision numops,time
          real*8 time1,time2
+         character(len = 32) dataFile
+
          call RANDOM_SEED()
 
-
-         open(unit=1,file="problem5mkl.txt")
-         open(unit=2,file='timesmkl.txt')
+         CALL GET_COMMAND_ARGUMENT(1,dataFile)
+         open(unit=1,file=dataFile)
+         open(unit=2,file='times.txt')
          write(1,*) "Vector Size (Mbytes), ",'My L3 BLAS, ' &
      &                ,'NETLIB L3 BLAS'
 
@@ -55,7 +57,7 @@
              end do
              end do
             call SYSTEM_CLOCK(stop1,countrate)
-            myt = (stop1-start1)*1d0/countrate      
+            myt = (stop1-start1)*1d0/countrate
             myflops = numops/myt/(1d6)
           end if
 
