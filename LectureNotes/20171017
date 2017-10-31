@@ -1,0 +1,3 @@
+Using MPI (William Gropp)
+
+Now what you do is, use mpicc to compile and link. mpicc is a shell program that calls the regular compilers with the right flags
