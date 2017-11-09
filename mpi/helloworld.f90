@@ -1,4 +1,4 @@
-       program helloworld
+      program helloworld
          implicit none
          use mpi
          integer ierr.myid,numprocs
