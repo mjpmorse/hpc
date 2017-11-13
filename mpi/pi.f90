@@ -1,4 +1,4 @@
-       program pi
+       program ppi
          use mpi
          implicit none
          double precision PI25DT
@@ -13,10 +13,11 @@
          call MPI_COMM_RANK(MPI_COMM_WORLD,myid,ierr)
          call MPI_COMM_SIZE(MPI_COMM_WORLD,numprocs,ierr)
 
-10       if (myid .eq. 0) then
-           write(*,*) 'Enter number of intervals: (0 quits) '
-           read(*,*)   n
-         end if
+!10       if (myid .eq. 0) then
+!           write(*,*) 'Enter number of intervals: (0 quits) '
+!           read(*,*)   n
+!         end if
+         n = 1d4
 
          call MPI_BCAST(n,1,MPI_INTEGER,0,MPI_COMM_WORLD,ierr)
 
@@ -38,7 +39,7 @@
           if (myid .eq. 0) then
             write(*,*) 'pi is ', pi,' Error is ',abs(pi-PI25DT)
           end if
-          goto 10
+!         goto 10
 30        call MPI_FINALIZE(ierr)
           stop
         end program
@@ -47,4 +48,4 @@
 
 
 
-       end program
+
