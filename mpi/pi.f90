@@ -3,7 +3,8 @@
          implicit none
          double precision PI25DT
          parameter (PI25DT = 3.141592653589793238462643d0)
-         double precision mypi,pi,h,sum1,x,f,g,a,sum2,pi2,mypi2
+         double precision h,sum1,x,f,g,a,sum2
+         double precision mypi(2),pi(2)
          integer n,myid,numprocs,i,ierr
 
 ! function to integrate
@@ -35,18 +36,18 @@
            ! rectangles are number of proc apart
 
 20       continue
-         mypi = h*sum1
-         mypi2 = h*sum2
+         mypi(1) = h*sum1
+         mypi(2) = h*sum2
 
 ! collect all the partial sums
-         call MPI_REDUCE(mypi,pi,1,MPI_DOUBLE_PRECISION,MPI_SUM &
+         call MPI_REDUCE(mypi,pi,2,MPI_DOUBLE_PRECISION,MPI_SUM &
                           ,0,MPI_COMM_WORLD,ierr)
-          call MPI_REDUCE(mypi2,pi2,1,MPI_DOUBLE_PRECISION,MPI_SUM &
-                                           ,0,MPI_COMM_WORLD,ierr)
+
+
 
           if (myid .eq. 0) then
-            write(*,*) 'pi from Gropp is ', pi,' Error is ',abs(pi-PI25DT)
-            write(*,*) 'pi from HW is ', pi2,' Error is ',abs(pi2-PI25DT)
+            write(*,*) 'pi from Gropp is ', pi(1),' Error is ',abs(pi(1)-PI25DT)
+            write(*,*) 'pi from HW is ', pi(2),' Error is ',abs(pi(2)-PI25DT)
           end if
 !         goto 10
 30        call MPI_FINALIZE(ierr)
