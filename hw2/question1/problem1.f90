@@ -1,9 +1,11 @@
 program helloworld
-   implicit none
    use mpi
-   integer ierr.myid,numprocs
+   use errorMod
+   implicit none
+   integer ierr,rank,numprocs
 
    call MPI_INIT(ierr)
+   call MPI_COMM_SET_ERRHANDLER(MPI_COMM_WORLD,MPI_ERRORS_RETURN,ierr) 
    call ERROR_CHECK(ierr)
    call MPI_COMM_RANK(MPI_COMM_WORLD,rank,ierr)
    call ERROR_CHECK(ierr)
