@@ -42,8 +42,13 @@
 ! collect all the partial sums
          call MPI_REDUCE(mypi,pi,2,MPI_DOUBLE_PRECISION,MPI_SUM &
                           ,0,MPI_COMM_WORLD,ierr)
+<<<<<<< HEAD
 
 
+=======
+         call MPI_REDUCE(mypi2,pi2,1,MPI_DOUBLE_PRECISION,MPI_SUM &
+                                           ,0,MPI_COMM_WORLD,ierr)
+>>>>>>> 81dd26955779175b666ef65d3cc8ce8aeb9b49fd
 
           if (myid .eq. 0) then
             write(*,*) 'pi from Gropp is ', pi(1),' Error is ',abs(pi(1)-PI25DT)
