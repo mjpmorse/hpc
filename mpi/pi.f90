@@ -41,7 +41,7 @@
 ! collect all the partial sums
          call MPI_REDUCE(mypi,pi,1,MPI_DOUBLE_PRECISION,MPI_SUM &
                           ,0,MPI_COMM_WORLD,ierr)
-          call MPI_REDUCE(mypi2,pi2,1,MPI_DOUBLE_PRECISION,MPI_SUM &
+         call MPI_REDUCE(mypi2,pi2,1,MPI_DOUBLE_PRECISION,MPI_SUM &
                                            ,0,MPI_COMM_WORLD,ierr)
 
           if (myid .eq. 0) then
