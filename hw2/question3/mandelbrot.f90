@@ -8,14 +8,17 @@
 ! defines the grid
          integer :: gridsize,xstep,ystep
          real(kind=dp) :: deltax,deltay,x,y
+         integer :: incount,allcount
          integer :: iteration,rank
          character(len = 32) :: datafile,stringrank
 ! set up the steps
          deltax = (xright - xleft)/(real(gridsize,dp))
          deltay = (ytop - ybottom)/(real(gridsize,dp))
-         area = 0d0
+         area = (xright - xleft)*(ytop-ybottom)
          x = xleft
          y = ybottom
+         allcount = 0
+         incount = 0
          write(stringrank,*) rank
          stringrank = adjustl(stringrank)
 
@@ -24,14 +27,16 @@
          do xstep = 1,gridsize,1
            do ystep = 1,gridsize,1
              call in_set(x,y,inset)
+             allcount = allcount + 1
              if(inset) then
                write(1,*) x,',',y
-               area = area + deltax*deltay
+               incount = incount + 1
              end if
              y = ybottom + real((ystep-1),dp)*deltay
            end do
            x = xleft+real((xstep-1),dp)*deltax
          end do
+         area = area*real(incount,dp)/real(allcount,dp)
        end subroutine
 
         subroutine in_set(creal,ci,inset)
@@ -45,7 +50,7 @@
           zi = ci
           do iteration = 1,10000,1
             call cabs(zreal,zi,zabs)
-            if(zabs .ge. 4d0) then
+            if(zabs .ge. 2d0) then
               inset = .false.
               goto 10
             end if
@@ -63,5 +68,5 @@
           implicit none
           integer, parameter :: dp = selected_real_kind(15,307)
           real(kind = dp) :: x,y,abs
-          abs = (x*x+y*y)
+          abs = (x*x+y*y)**(0.5)
         end subroutine
