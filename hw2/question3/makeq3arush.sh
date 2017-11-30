@@ -5,4 +5,4 @@
 #module load intel/17.0
 #module list
 #mpifort -c ../errormod.f90
-gfortran question3a.f90 mandelbrot.f90 -o $HOME/mybin/hw2q3a
+gfortran source/question3a.f90 source/mandelbrot.f90 -o $HOME/mybin/hw2q3a

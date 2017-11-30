@@ -59,7 +59,7 @@
          call MPI_COMM_SIZE(MPI_COMM_WORLD,numprocs,error)
          call ERROR_CHECK(error)
           
-         maxlength = 100000000
+         maxlength = 1000000
          quadone = 1
 !set up data file
          if(rank .eq. 0) then
@@ -75,8 +75,8 @@
               vector(:) = 3
               starttime = MPI_WTIME()
            end if
-           if(length .lt. 10000) then 
-              do smallloop = 1,1000 
+           if(length .lt. 100000) then 
+              do smallloop = 1,10000 
                   call pingpong(vector,length)
                   if(rank.eq.1) then
                     vector(:) = 0
@@ -84,7 +84,7 @@
               end do
               if(rank .eq.0) then
                  endtime =  MPI_WTIME()
-                 time = (endtime - starttime)/real(1000,dp)
+                 time = (endtime - starttime)/real(10000,dp)
                  write(1,*) length,',',time
                end if
            else 
