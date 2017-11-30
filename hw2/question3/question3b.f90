@@ -22,9 +22,9 @@
          area(:) = 0d0
          finalarea(:)=0d0
 
-! we will actual vertically strip the grid as if we want to box it
-! and take into account proper dimentions we need a 2:1 processor
-! ratio for horizontal vs vertical which means mod(size,3) = 0
+
+
+
 
           xmin = -2d0
           xmax = 2d0

@@ -4,7 +4,7 @@
          integer, parameter :: dp = selected_real_kind(15,307)
 ! define the box we are working in
          real(kind=dp) :: xleft,xright,ybottom,ytop
-         real(kind=dp),dimension(2) :: area
+         real(kind=dp) :: area
          logical :: inset
 ! defines the grid
          integer :: gridsize,xstep,ystep
@@ -12,11 +12,11 @@
          integer :: incount,allcount
          integer :: iteration,rank
          character(len = 32) :: datafile,stringrank
+         integer, dimension(gridsize,gridsize) :: figure
 ! set up the steps
          deltax = (xright - xleft)/(real(gridsize,dp))
          deltay = (ytop - ybottom)/(real(gridsize,dp))
-         area(1) = (xright - xleft)*(ytop-ybottom)
-         area(2) = 0d0
+         area = 0d0
          x = xleft + deltax/2d0
          y = ybottom + deltay/2d0
          dxdy = deltax*deltay
@@ -31,16 +31,23 @@
            do ystep = 1,gridsize,1
              call in_set(x,y,inset)
              allcount = allcount + 1
+!In the mandelbrot set
              if(inset) then
-               write(1,*) x,',',y
-               incount = incount + 1
-               area(2) = area(2) + dxdy
+               figure(xstep,ystep) = 0
+               area = area +dxdy
+             else
+               figure(xstep,ystep) = 255
              end if
              y = ybottom + real((ystep-1),dp)*deltay
            end do
            x = xleft+real((xstep-1),dp)*deltax
          end do
-         area(1) = area(1)*real(incount,dp)/real(allcount,dp)
+         !Plot mandelbrot set in complex plane
+         open  (10, file = 'output.pgm')
+         write (10, '(a/ i0, 1x, i0/ i0)') 'P2', gridsize, gridsize, 255
+         write (10, '(i0)') figure
+         close (10)
+
        end subroutine
 
         subroutine in_set(creal,ci,inset)
@@ -52,9 +59,10 @@
           inset = .false.
           zreal = creal
           zi = ci
-          do iteration = 1,10000,1
+          zabs = 0d0
+          do iteration = 1,100000,1
             call cabs(zreal,zi,zabs)
-            if(zabs .ge. 4d0) then
+            if(zabs .gt. 4d0) then
               inset = .false.
               goto 10
             end if
@@ -64,7 +72,9 @@
             zreal = (zreal*zreal - zi*zi ) + creal
             zi = 2d0 * zreal * zi + ci
           end do
-          inset =  .true.
+          if (zabs .le. 4) then
+              inset =  .true.
+          endif
 10        continue
         end subroutine
 
