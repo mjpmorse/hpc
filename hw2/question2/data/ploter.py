@@ -10,6 +10,5 @@ mytime = pyplot.scatter(np.log(4.*data[1:,0]/np.log(4.)), data[1:,1]*10.**3,mark
 #pyplot.xticks(np.log(data[1:,0]/np.log(4.)),labels)
 pyplot.xlabel('Log_4 Vector Size in Bytes')
 pyplot.ylabel('Time(ms)')
-#pyplot.legend((mytime),('Simple BLAS','NETLIB BLAS','Simple BLAS MKL','NETLIB BLAS MKL'));
 pyplot.title("Ping-Pong")
 pyplot.savefig('pingpong.png')

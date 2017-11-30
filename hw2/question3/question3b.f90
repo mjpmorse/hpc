@@ -3,7 +3,7 @@
           implicit none
           integer, parameter :: dp = selected_real_kind(15,307)
           real(kind = dp) :: xmin,xmax,ymin,ymax
-          real(kind = dp),dimension(2) :: finalarea,area
+          real(kind = dp) :: finalarea,area
           real(kind = dp) :: xranklow,xrankhigh,dx
           integer ::gridsize
           character(len = 1024) :: datafile
@@ -19,8 +19,8 @@
          call ERROR_CHECK(error)
 
          call GET_COMMAND_ARGUMENT(1,datafile)
-         area(:) = 0d0
-         finalarea(:)=0d0
+         area = 0d0
+         finalarea=0d0
 
 
 
@@ -40,13 +40,12 @@
           call mandelbrot(xranklow,xrankhigh,ymin,ymax,rank,datafile, &
                                 gridsize,area)
 
-          call MPI_REDUCE(area,finalarea,2,MPI_DOUBLE_PRECISION,&
+          call MPI_REDUCE(area,finalarea,1,MPI_DOUBLE_PRECISION,&
                            MPI_SUM ,0,MPI_COMM_WORLD,error)
           call ERROR_CHECK(error)
 
           if(rank .eq. 0) then
-            write(*,*) 'the area is by dxdy:', area(2)
-            write(*,*) 'the area by monte:',area(1)
+            write(*,*) 'the area is by dxdy:', finalarea
           endif
           call MPI_FINALIZE(error)
         end program

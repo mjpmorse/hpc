@@ -12,7 +12,7 @@
           ymax = 1d0
           call GET_COMMAND_ARGUMENT(1,datafile)
 !          call GET_COMMAND_ARGUMENT(2,gridsize)
-          gridsize = 500
+          gridsize = 1000
           call mandelbrot(xmin,xmax,ymin,ymax,0,datafile, &
                                 gridsize,area)
           write(*,*) 'the area is by dxdy:', area
