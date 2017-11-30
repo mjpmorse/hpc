@@ -12,7 +12,6 @@
          integer :: incount,allcount
          integer :: iteration,rank
          character(len = 32) :: datafile,stringrank
-         integer, dimension(gridsize,gridsize) :: figure
 ! set up the steps
          deltax = (xright - xleft)/(real(gridsize,dp))
          deltay = (ytop - ybottom)/(real(gridsize,dp))
@@ -28,24 +27,15 @@
          do xstep = 1,gridsize,1
            do ystep = 1,gridsize,1
              call in_set(x,y,inset)
-             allcount = allcount + 1
 !In the mandelbrot set
              if(inset) then
-               figure(xstep,ystep) = 0
                area = area +dxdy
                write(1,*) x,',',y
-             else
-               figure(xstep,ystep) = 255
              end if
              y = ybottom + real((ystep),dp)*deltay
            end do
            x = xleft+real((xstep),dp)*deltax
          end do
-         !Plot mandelbrot set in complex plane
-         open  (10, file = 'output.pgm')
-         write (10, '(a/ i0, 1x, i0/ i0)') 'P2', gridsize, gridsize, 255
-         write (10, '(i0)') figure
-         close (10)
          close(1)
        end subroutine
 
