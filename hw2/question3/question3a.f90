@@ -1,7 +1,8 @@
         program problem3a
           implicit none
           integer, parameter :: dp = selected_real_kind(15,307)
-          real(kind = dp) :: xmin,xmax,ymin,ymax,area
+          real(kind = dp) :: xmin,xmax,ymin,ymax
+          real(kind=dp),dimension(2) :: area
           integer ::gridsize
           character(len = 1024) :: datafile
 
@@ -11,8 +12,9 @@
           ymax = 1d0
           call GET_COMMAND_ARGUMENT(1,datafile)
 !          call GET_COMMAND_ARGUMENT(2,gridsize)
-          gridsize = 1000
+          gridsize = 10000
           call mandelbrot(xmin,xmax,ymin,ymax,0,datafile, &
                                 gridsize,area)
-          write(*,*) 'the area is ', area
+          write(*,*) 'the area is by dxdy:', area(2)
+          write(*,*) 'the area by monte:',area(1)
         end program

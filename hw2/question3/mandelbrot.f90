@@ -3,20 +3,23 @@
          implicit none
          integer, parameter :: dp = selected_real_kind(15,307)
 ! define the box we are working in
-         real(kind=dp) :: xleft,xright,ybottom,ytop,area
+         real(kind=dp) :: xleft,xright,ybottom,ytop
+         real(kind=dp),dimension(2) :: area
          logical :: inset
 ! defines the grid
          integer :: gridsize,xstep,ystep
-         real(kind=dp) :: deltax,deltay,x,y
+         real(kind=dp) :: deltax,deltay,x,y,dxdy
          integer :: incount,allcount
          integer :: iteration,rank
          character(len = 32) :: datafile,stringrank
 ! set up the steps
          deltax = (xright - xleft)/(real(gridsize,dp))
          deltay = (ytop - ybottom)/(real(gridsize,dp))
-         area = (xright - xleft)*(ytop-ybottom)
-         x = xleft
-         y = ybottom
+         area(1) = (xright - xleft)*(ytop-ybottom)
+         area(2) = 0d0
+         x = xleft + deltax/2d0
+         y = ybottom + deltay/2d0
+         dxdy = deltax*deltay
          allcount = 0
          incount = 0
          write(stringrank,*) rank
@@ -31,12 +34,13 @@
              if(inset) then
                write(1,*) x,',',y
                incount = incount + 1
+               area(2) = area(2) + dxdy
              end if
              y = ybottom + real((ystep-1),dp)*deltay
            end do
            x = xleft+real((xstep-1),dp)*deltax
          end do
-         area = area*real(incount,dp)/real(allcount,dp)
+         area(1) = area(1)*real(incount,dp)/real(allcount,dp)
        end subroutine
 
         subroutine in_set(creal,ci,inset)
@@ -50,7 +54,7 @@
           zi = ci
           do iteration = 1,10000,1
             call cabs(zreal,zi,zabs)
-            if(zabs .ge. 2d0) then
+            if(zabs .ge. 4d0) then
               inset = .false.
               goto 10
             end if
@@ -68,5 +72,5 @@
           implicit none
           integer, parameter :: dp = selected_real_kind(15,307)
           real(kind = dp) :: x,y,abs
-          abs = (x*x+y*y)**(0.5)
+          abs = (x*x+y*y)
         end subroutine

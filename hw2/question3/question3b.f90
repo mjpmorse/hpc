@@ -41,9 +41,12 @@
                                 gridsize,area)
 
           call MPI_REDUCE(area,finalarea,2,MPI_DOUBLE_PRECISION,&
-                           MPI_SUM ,0,MPI_COMM_WORLD,ierr)
+                           MPI_SUM ,0,MPI_COMM_WORLD,error)
+          call ERROR_CHECK(error)
 
           if(rank .eq. 0) then
-
-          write(*,*) 'the area is ', area
+            write(*,*) 'the area is by dxdy:', area(2)
+            write(*,*) 'the area by monte:',area(1)
+          endif
+          call MPI_FINALIZE(error)
         end program

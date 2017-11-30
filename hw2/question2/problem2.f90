@@ -60,7 +60,7 @@
          call ERROR_CHECK(error)
 
 ! default interger in F90 is 4 bytes so we need maxlength = 2E6 to get a max of 8MBytes          
-         maxlength = 200100
+         maxlength = 2001000
          quadone = 1
 !set up data file
          if(rank .eq. 0) then
