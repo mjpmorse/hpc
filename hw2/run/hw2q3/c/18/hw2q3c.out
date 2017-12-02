@@ -1,0 +1,6 @@
+SLURM_JOB_ID=7799418
+SLURM_JOB_NODELIST=cpn-k13-04-02,cpn-k13-16-02
+SLURM_NNODES=2
+SLURMTMPDIR=/scratch/7799418
+working directory=/user/mjmorse3/run/hw2q3/c/18
+All Done!

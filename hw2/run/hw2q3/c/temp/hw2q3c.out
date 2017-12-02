@@ -1,0 +1,7 @@
+SLURM_JOB_ID=7796372
+SLURM_JOB_NODELIST=cpn-k08-40-01
+SLURM_NNODES=1
+SLURMTMPDIR=/scratch/7796372
+working directory=/user/mjmorse3/run/hw2q3/c/temp
+ area is    1.50788799999969     
+All Done!
