@@ -17,8 +17,9 @@
 ! set up the steps
          integer :: error, rank, size
          integer ::status(MPI_STATUS_SIZE)
-         integer :: REQUEST, REPLY,sender,i
+         integer :: REQUEST, REPLY,sender,i,mpirequest
          logical :: workdone
+         real(kind = dp) :: stime,etime,time
          parameter  (REQUEST = 1)
          parameter  (REPLY = 2)
          
@@ -44,12 +45,15 @@
          write(stringrank,*) rank
          stringrank = adjustl(stringrank)
          totalarea = 0d0
-         gridsize = 100
+         gridsize = 1000
          recieve = 0
          workdone = .false.
 
          open(unit = 1, file = trim(datafile)//trim(stringrank)//'.dat')
          if(rank.eq.0) then
+           
+           open(unit = 50, file = 'time.txt')
+           stime = MPI_WTIME()
            do xstep = 1,gridsize,1
              x = xleft+real((xstep-1),dp)*deltax
              do ystep = 1,gridsize,1
@@ -70,15 +74,16 @@
            end do
            call error_check(error)
 ! make sure no slaves are stuck waiting for a command           
-           do i = 1,size+2  
-               call  MPI_IRECV(recieve,1,MPI_INT,MPI_ANY_SOURCE,& 
-                              REQUEST,MPI_COMM_WORLD, &
-                              status,error)
-               call error_check(error)
-               sender = status(MPI_SOURCE)
+           do i = 1,size-1  
+!               call  MPI_IRECV(recieve,1,MPI_INT,MPI_ANY_SOURCE,& 
+!                              REQUEST,MPI_COMM_WORLD, &
+!                              mpirequest,error)
+!               call error_check(error)
+!               sender = status(MPI_SOURCE)
+               point(:) = 1d2
                call MPI_ISEND(point,2,MPI_DOUBLE_PRECISION &
-                             ,sender,REPLY &
-                             ,MPI_COMM_WORLD,error)
+                             ,i,REPLY &
+                             ,MPI_COMM_WORLD,mpirequest,error)
                call ERROR_CHECK(error)
            end do
            goto 30
@@ -86,17 +91,18 @@
          
 
          if(rank.ne.0) then
-20         if((point(1).eq.xright).and.(point(2).eq.ytop)) then
-              goto 30
-           end if
-           call MPI_SEND(REQUEST,1,MPI_INT,0,REQUEST,MPI_COMM_WORLD,error)
+20        call MPI_ISEND(REQUEST,1,MPI_INT,0,REQUEST,MPI_COMM_WORLD &
+                          ,mpirequest,error)
            call error_check(error)
            call MPI_RECV(point,2,MPI_DOUBLE_PRECISION,0,&
                            REPLY, MPI_COMM_WORLD,&
                          status,error)
            call ERROR_CHECK(error)
-           xgiven = point(1)
+           if((point(1).eq.1d2).and.(point(2).eq.1d2)) then
+              goto 30
+           end if
            ygiven = point(2)
+           xgiven = point(1)
            call in_set(xgiven,ygiven,inset)
            if(inset) then
              area = area+dxdy
@@ -109,7 +115,9 @@
          MPI_SUM,0,MPI_COMM_WORLD,error)
          call error_check(error)
          if(rank.eq.0) then
-           write(*,*) 'area is ',totalarea
+           etime = MPI_WTIME()
+           time = etime - stime
+           write(50,*) time
          end if
          call MPI_FINALIZE(error)
        end program

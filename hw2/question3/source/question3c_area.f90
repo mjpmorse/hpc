@@ -16,10 +16,10 @@
          character(len = 32) :: datafile,stringrank
 ! set up the steps
          integer :: error, rank, size
-         integer :: status(MPI_STATUS_SIZE)
-         integer :: mpirequest
-         integer :: REQUEST, REPLY,sender,i,j
+         integer ::status(MPI_STATUS_SIZE)
+         integer :: REQUEST, REPLY,sender,i,mpirequest
          logical :: workdone
+         real(kind = dp) :: stime,etime,time
          parameter  (REQUEST = 1)
          parameter  (REPLY = 2)
          
@@ -48,12 +48,23 @@
 !        gridsize = 1000
          recieve = 0
          workdone = .false.
-         if(rank.eq.0) then
-             open(unit = 2, file = 'area_3c.txt')
+
+!         open(unit = 1, file = trim(datafile)//trim(stringrank)//'.dat')
+         if(rank.eq.0) then 
+           open(unit = 50, file = 'area_c.txt')
          end if
-         do gridsize = 50,2000,100
-         open(unit = 1, file = trim(datafile)//trim(stringrank)//'.dat')
+         do gridsize = 50,2000,100         
+         totalarea = 0d0
+         area = 0d0
+!        gridsize = 1000
+         recieve = 0
+         workdone = .false.
+         deltax = (xright - xleft)/(real(gridsize,dp))
+         deltay = (ytop - ybottom)/(real(gridsize,dp))
+         dxdy = deltax*deltay
+         point(:) = 0d0
          if(rank.eq.0) then
+!           stime = MPI_WTIME()
            do xstep = 1,gridsize,1
              x = xleft+real((xstep-1),dp)*deltax
              do ystep = 1,gridsize,1
@@ -74,12 +85,13 @@
            end do
            call error_check(error)
 ! make sure no slaves are stuck waiting for a command           
-           do i = 1,size 
-               call  MPI_IRECV(recieve,1,MPI_INT,MPI_ANY_SOURCE,& 
-                              REQUEST,MPI_COMM_WORLD, &
-                              mpirequest,error)
-               call error_check(error)
+           do i = 1,size-1  
+!               call  MPI_IRECV(recieve,1,MPI_INT,MPI_ANY_SOURCE,& 
+!                              REQUEST,MPI_COMM_WORLD, &
+!                              mpirequest,error)
+!               call error_check(error)
 !               sender = status(MPI_SOURCE)
+               point(:) = 1d2
                call MPI_ISEND(point,2,MPI_DOUBLE_PRECISION &
                              ,i,REPLY &
                              ,MPI_COMM_WORLD,mpirequest,error)
@@ -87,40 +99,38 @@
            end do
            goto 30
          end if
-         point(1) = 0d0
-         point(2) = 0d0
+         
 
          if(rank.ne.0) then
-20         if((point(1).eq.xright).and.(point(2).eq.ytop)) then
-              goto 30
-           end if
-           call MPI_SEND(REQUEST,1,MPI_INT,0,REQUEST,MPI_COMM_WORLD,error)
+20        call MPI_ISEND(REQUEST,1,MPI_INT,0,REQUEST,MPI_COMM_WORLD &
+                          ,mpirequest,error)
            call error_check(error)
            call MPI_RECV(point,2,MPI_DOUBLE_PRECISION,0,&
                            REPLY, MPI_COMM_WORLD,&
                          status,error)
            call ERROR_CHECK(error)
-           xgiven = point(1)
+           if((point(1).eq.1d2).and.(point(2).eq.1d2)) then
+              goto 30
+           end if
            ygiven = point(2)
+           xgiven = point(1)
            call in_set(xgiven,ygiven,inset)
            if(inset) then
              area = area+dxdy
-             write(1,*) xgiven,"," ,ygiven
+!             write(1,*) xgiven,"," ,ygiven
            end if
            goto 20
          end if
-
+         totalarea = 0d0
 30       call MPI_REDUCE(area,totalarea,1,MPI_DOUBLE_PRECISION,&
          MPI_SUM,0,MPI_COMM_WORLD,error)
          call error_check(error)
          if(rank.eq.0) then
-           write(2,*) totalarea,real(gridsize,dp)
+!           etime = MPI_WTIME()
+!           time = etime - stime
+           write(50,*) totalarea, real(gridsize,dp)
+           write(*,*)  totalarea,real(gridsize,dp)
          end if
-
          end do
-         if(rank.eq.0) then
-            close(2)
-         end if
          call MPI_FINALIZE(error)
-         close(1)
        end program
