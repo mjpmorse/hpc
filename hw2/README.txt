@@ -6,4 +6,4 @@ To compile a code run the sh script. With the exception of the time for 3 all da
 
 the times were put together by hand into a single file.
 
-
+the report is in report directory

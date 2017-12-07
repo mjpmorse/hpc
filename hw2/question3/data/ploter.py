@@ -15,5 +15,4 @@ for i in range(1,len(data[:,0])):
 plt.ylabel('imagionary axis')
 plt.xlabel('real axis')
 plt.title('Mandelbrot set')
-plt.show()
 plt.savefig('mandelbrot.png')
