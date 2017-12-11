@@ -47,7 +47,7 @@
 !         write(stringrank,*) rank
 !         stringrank = adjustl(stringrank)
          totalarea = 0d0
-         gridsize = 1000
+         gridsize = 2000
          recieve = 0
          workdone = .false.
 

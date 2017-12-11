@@ -47,9 +47,10 @@
 !         write(stringrank,*) rank
 !         stringrank = adjustl(stringrank)
          totalarea = 0d0
-         gridsize = 1000
+         gridsize = 2000*int((real(size,dp))**(1./real(2,dp)))
          recieve = 0
          workdone = .false.
+        
 
 !         open(unit = 1, file = trim(datafile)//trim(stringrank)//'.dat')
          if(rank.eq.0) then

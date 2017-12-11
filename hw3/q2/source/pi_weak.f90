@@ -5,7 +5,7 @@
          parameter (PI25DT = 3.141592653589793238462643d0)
          double precision h,sum1,x,f,g,a,sum2
          double precision mypi(2),pi(2),stime,etime,time
-         integer n,myid,numprocs,i,ierr
+         integer n,myid,size,i,ierr
          character(len =2) :: proc
 
 ! function to integrate
@@ -16,12 +16,12 @@
 
          call MPI_INIT(ierr)
          call MPI_COMM_RANK(MPI_COMM_WORLD,myid,ierr)
-         call MPI_COMM_SIZE(MPI_COMM_WORLD,numprocs,ierr)
+         call MPI_COMM_SIZE(MPI_COMM_WORLD,size,ierr)
 
 10       if (myid .eq. 0) then
 !           write(*,*) 'Enter number of intervals: (0 quits) '
 !           read(*,*)   n
-            n = 1d9
+            n = 1d9*dble(size)
             stime = MPI_WTIME()
          end if
 !         n = 1d5
@@ -33,7 +33,7 @@
          h = 1.0d0/n
          sum1 = 0.0d0
          sum2 = 0.0d0
-         do 20 i = myid +1,n,numprocs
+         do 20 i = myid +1,n,size
            x = h * (dble(i) - 0.5d0)
            sum1 = sum1 +f(x)
            sum2 = sum2 + g(x)
