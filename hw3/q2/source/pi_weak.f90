@@ -21,8 +21,9 @@
 10       if (myid .eq. 0) then
 !           write(*,*) 'Enter number of intervals: (0 quits) '
 !           read(*,*)   n
-            n = 1d9*dble(size)
+            n = 1d6*dble(size)
             stime = MPI_WTIME()
+            goto 30
          end if
 !         n = 1d5
 
@@ -44,7 +45,7 @@
          mypi(2) = h*sum2
 
 ! collect all the partial sums
-         call MPI_REDUCE(mypi,pi,2,MPI_DOUBLE_PRECISION,MPI_SUM &
+          call MPI_REDUCE(mypi,pi,2,MPI_DOUBLE_PRECISION,MPI_SUM &
                           ,0,MPI_COMM_WORLD,ierr)
 !         call MPI_REDUCE(mypi(2,pi2,1,MPI_DOUBLE_PRECISION,MPI_SUM &
 !                                           ,0,MPI_COMM_WORLD,ierr)
@@ -59,5 +60,4 @@
           end if
 !         goto 10
 30        call MPI_FINALIZE(ierr)
-          stop
         end program

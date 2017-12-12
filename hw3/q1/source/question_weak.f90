@@ -47,7 +47,7 @@
 !         write(stringrank,*) rank
 !         stringrank = adjustl(stringrank)
          totalarea = 0d0
-         gridsize = 2000*int((real(size,dp))**(1./real(2,dp)))
+         gridsize = 1000*int((real(size,dp))**(1./real(2,dp)))
          recieve = 0
          workdone = .false.
         

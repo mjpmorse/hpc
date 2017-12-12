@@ -44,12 +44,12 @@
          mypi(2) = h*sum2
 
 ! collect all the partial sums
-         call MPI_REDUCE(mypi,pi,2,MPI_DOUBLE_PRECISION,MPI_SUM &
+30         call MPI_REDUCE(mypi,pi,2,MPI_DOUBLE_PRECISION,MPI_SUM &
                           ,0,MPI_COMM_WORLD,ierr)
 !         call MPI_REDUCE(mypi(2,pi2,1,MPI_DOUBLE_PRECISION,MPI_SUM &
 !                                           ,0,MPI_COMM_WORLD,ierr)
 
-          if (myid .eq. 0) then
+           if (myid .eq. 0) then
              etime = MPI_WTIME()
              time = etime-stime
 !            write(*,*) 'pi from Gropp is ', pi(1),' Error is ',abs(pi(1)-PI25DT)
@@ -58,6 +58,6 @@
 
           end if
 !         goto 10
-30        call MPI_FINALIZE(ierr)
+          call MPI_FINALIZE(ierr)
           stop
         end program
