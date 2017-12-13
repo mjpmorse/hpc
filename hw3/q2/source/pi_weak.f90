@@ -23,7 +23,7 @@
 !           read(*,*)   n
             n = 1d6*dble(size)
             stime = MPI_WTIME()
-            goto 30
+!            write(*,*) 'n is :', n
          end if
 !         n = 1d5
 
